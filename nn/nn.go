@@ -1,23 +1,25 @@
 package nn
 
+type Network struct {
+	Kind         string        // required
+	Version      string        // required
+	BatchSize    int           `yaml:"batch_size"` // required
+	PlaceHolders []PlaceHolder // required
+	Layers       []Layer       // required
+	Checksum     string        // optional. will overwrite anyway
+}
+
 type PlaceHolder struct {
-	Name  string
-	Shape []int  `yaml:",flow"`
-	Kind  string // input, output, label
+	Name  string // required
+	Shape []int  `yaml:",flow"` // required
+	Kind  string // required: input, output, label
 }
 
 type Layer struct {
-	Kind       string
-	Version    string
-	Input      []string
-	Outputs    []string
-	Properties map[string]interface{}
-}
-
-type Network struct {
-	Kind         string
-	Version      string
-	BatchSize    int `yaml:"batch_size"`
-	PlaceHolders []PlaceHolder
-	Layers       []Layer
+	Kind       string                 // required
+	Version    string                 // required
+	Input      []string               // optional
+	Outputs    []string               // optional
+	Properties map[string]interface{} // optional
+	Checksum   string                 // optional. will overwrite anyway
 }

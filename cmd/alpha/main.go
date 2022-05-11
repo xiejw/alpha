@@ -37,8 +37,9 @@ layers:
 `
 
 func main() {
-	t := nn.Network{}
+	fmt.Printf("--- data original:\n%v\n\n", data)
 
+	t := nn.Network{}
 	err := yaml.Unmarshal([]byte(data), &t)
 	if err != nil {
 		log.Fatalf("error: %v", err)

@@ -41,12 +41,14 @@ clean:
 # binaries
 # ------------------------------------------------------------------------------
 ${BUILD_DIR}:
-	mkdir -p ${BUILD_DIR}
+	@mkdir -p ${BUILD_DIR}
 
-.PHONY: alpha ${BUILD_DIR}/alpha
+.PHONY: a alpha ${BUILD_DIR}/alpha
+
+a: alpha
 
 alpha: ${BUILD_DIR}/alpha
-	${BUILD_DIR}/alpha
+	@${BUILD_DIR}/alpha
 
 ${BUILD_DIR}/alpha: ${BUILD_DIR}
 	${LD} $@ cmd/alpha/main.go
