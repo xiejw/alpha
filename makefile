@@ -12,7 +12,7 @@ FMT     = go fmt
 # configuraiton
 # ------------------------------------------------------------------------------
 REPO      = alpha
-LIBS      = github.com/xiejw/${REPO}/...
+LIBS      = github.com/xiejw/${REPO}/src/...
 BUILD_DIR = .build
 
 # ------------------------------------------------------------------------------
@@ -21,13 +21,10 @@ BUILD_DIR = .build
 
 .PHONY: compile
 
-compile: ${BUILD_DIR} ${LIBS} ${BUILD_DIR}/alpha
+compile: compile_libs ${BUILD_DIR}/alpha
 
-${BUILD_DIR}:
-	mkdir -p ${BUILD_DIR}
-
-${LIBS}:
-	${GO} $@
+compile_libs:
+	#${GO} ${LIBS}
 
 fmt:
 	${FMT} ${LIBS}
@@ -41,8 +38,14 @@ clean:
 # ------------------------------------------------------------------------------
 # binaries
 # ------------------------------------------------------------------------------
-alpah: ${BUILD_DIR}/alpha
+${BUILD_DIR}:
+	mkdir -p ${BUILD_DIR}
 
-${BUILD_DIR}/alpha:
+.PHONY: alpha
+
+alpha: ${BUILD_DIR}/alpha
+	${BUILD_DIR}/alpha
+
+${BUILD_DIR}/alpha: ${BUILD_DIR}
 	${LD} $@ cmd/alpha/main.go
 
