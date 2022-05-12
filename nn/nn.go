@@ -1,25 +1,46 @@
 package nn
 
 type Network struct {
-	Kind         string        // required
-	Version      string        // required
-	BatchSize    int           `yaml:"batch_size"` // required
-	PlaceHolders []PlaceHolder // required
-	Layers       []Layer       // required
-	Checksum     string        // optional. will overwrite anyway
+	// Required by Component
+	Kind    string
+	Version string
+
+	// Optional. Wil be overwritten by Component.Sign()
+	Checksum string
+
+	// Required. The batch size of this network.
+	BatchSize int `yaml:"batch_size"`
+
+	// Required. The placeholders for inputs, outputs, labels, etc.
+	PlaceHolders []PlaceHolder
+
+	// Required.
+	//
+	// The details requirement is defined by the underlying implementaiton.
+	//
+	// For example, for single tower network:
+	//   - The first layer must have inputs. Othe layers are allowed to take
+	//     inputs as well, but optional.
+	//   - The last layer must have outputs. No other layers are allowed to
+	//     have outputs.
+	Layers []Layer // Required
 }
 
 type PlaceHolder struct {
-	Name  string // required
-	Shape []int  `yaml:",flow"` // required
-	Kind  string // required: input, output, label
+	Kind  string // Required: input, output, label
+	Name  string // Required. Unique in the scope (e.g., Network).
+	Shape []int  `yaml:",flow"` // Required
 }
 
 type Layer struct {
-	Kind       string                 // required
-	Version    string                 // required
-	Input      []string               // optional
-	Outputs    []string               // optional
-	Properties map[string]interface{} // optional
-	Checksum   string                 // optional. will overwrite anyway
+	// Required by Component
+	Kind    string
+	Version string
+
+	// Optional. Wil be overwritten Component.Sign()
+	Checksum string
+
+	Input      []string               // Optional
+	Outputs    []string               // Optional
+	Properties map[string]interface{} // Optional
 }

@@ -14,3 +14,8 @@ operated on the same manifest--data driven not object driven.
 Random seeds are tree splitting sematics.
 
 --------------------------------------------------------------------------------
+
+ROADMAP~
+
+Build weight initialization and inference step.
+

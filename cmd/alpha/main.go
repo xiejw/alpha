@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"gopkg.in/yaml.v2"
@@ -11,44 +10,50 @@ import (
 
 var data = `
 kind: network
-version: v1
+version: single_tower.v1
 batch_size: &bs 32
 placeholders:
-  - name: x
+  - kind: input
+    name: x
     shape: [*bs, 16]
-    kind: input
-  - name: o
+  - kind: output
+    name: o
     shape: [*bs, 16]
-    kind: output
-  - name: y
+  - kind: label
+    name: y
     shape: [*bs, 1]
-    kind: label
 layers:
-- kind: dense
-  version: v1
+- kind: layer
+  version: dense.v1
   inputs: [x]
   properties:
     hidden_dim: 64
-- kind: dense
-  version: v1
+- kind: layer
+  version: dense.v1
   properties:
     hidden_dim: 128
   outputs: [y]
 `
 
 func main() {
-	fmt.Printf("--- data original:\n%v\n\n", data)
+	// ---------------------------------------------------------------------
+	// Print the original data
+	log.Printf("--- data original:\n%v\n\n", data)
 
-	t := nn.Network{}
-	err := yaml.Unmarshal([]byte(data), &t)
+	// ---------------------------------------------------------------------
+	// Print the unmarshal result
+	n := nn.Network{}
+	err := yaml.Unmarshal([]byte(data), &n)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	fmt.Printf("--- t:\n%v\n\n", t)
+	log.Printf("--- n:\n%v\n\n", n)
 
-	d, err := yaml.Marshal(&t)
+	// ---------------------------------------------------------------------
+	// Print the marshal result
+	d, err := yaml.Marshal(&n)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	fmt.Printf("--- t dump:\n%s\n\n", string(d))
+	log.Printf("--- t dump:\n%s\n\n", string(d))
 }
